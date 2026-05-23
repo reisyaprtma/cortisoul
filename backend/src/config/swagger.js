@@ -40,7 +40,12 @@ const swaggerDocs = {
         tags: ['Users'],
         summary: 'Get user by id',
         parameters: [
-          { name: 'id', in: 'path', required: true, schema: { type: 'string' } },
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'string' },
+          },
         ],
         responses: { 200: { description: 'OK' } },
       },
@@ -144,7 +149,12 @@ const swaggerDocs = {
         summary: 'Get journal',
         security: [{ bearerAuth: [] }],
         parameters: [
-          { name: 'id', in: 'path', required: true, schema: { type: 'string' } },
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'string' },
+          },
         ],
         responses: { 200: { description: 'OK' } },
       },
@@ -153,7 +163,12 @@ const swaggerDocs = {
         summary: 'Update journal',
         security: [{ bearerAuth: [] }],
         parameters: [
-          { name: 'id', in: 'path', required: true, schema: { type: 'string' } },
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'string' },
+          },
         ],
         requestBody: {
           content: {
@@ -175,7 +190,12 @@ const swaggerDocs = {
         summary: 'Delete journal',
         security: [{ bearerAuth: [] }],
         parameters: [
-          { name: 'id', in: 'path', required: true, schema: { type: 'string' } },
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: { type: 'string' },
+          },
         ],
         responses: { 200: { description: 'OK' } },
       },

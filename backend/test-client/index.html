@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Web Push</title>
+</head>
+<body>
+  <h1>Test Web Push Client</h1>
+  <p>Karena Push Notification harus digenerate oleh browser, gunakan halaman ini untuk mendapatkan `endpoint` dan `keys`.</p>
+  
+  <h3>Langkah 1: Generate Subscription Payload</h3>
+  <button id="btn-subscribe">Generate Subscription Payload</button>
+  <br><br>
+  <textarea id="sub-result" rows="12" cols="80" placeholder="Hasil JSON Payload untuk endpoint /notifications/subscribe akan muncul di sini..."></textarea>
+
+  <script>
+    // Public VAPID Key Anda dari file .env
+    const VAPID_PUBLIC_KEY = 'BIjp27vbafSkdwNJnCnMexCh6x_61R6HENiVwc8jgBzL2IcJsG5oCdm4R-N0F1i81l0iSDJoawPpJwCR0FVGZfY';
+    
+    function urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+      const rawData = window.atob(base64);
+      const outputArray = new Uint8Array(rawData.length);
+      for (let i = 0; i < rawData.length; ++i) { outputArray[i] = rawData.charCodeAt(i); }
+      return outputArray;
+    }
+
+    document.getElementById('btn-subscribe').addEventListener('click', async () => {
+      if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+        alert('Browser Anda tidak mendukung Web Push!');
+        return;
+      }
+
+      try {
+        const register = await navigator.serviceWorker.register('/sw.js');
+        const subscription = await register.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+        });
+
+        const subJson = subscription.toJSON();
+        const payload = {
+          endpoint: subJson.endpoint,
+          keys: {
+            p256dh: subJson.keys.p256dh,
+            auth: subJson.keys.auth
+          }
+        };
+
+        document.getElementById('sub-result').value = JSON.stringify(payload, null, 2);
+      } catch (error) {
+        console.error('Error saat subscribe:', error);
+        alert('Gagal: Pastikan Anda memberikan izin (Allow) notifikasi saat ditanya browser.');
+      }
+    });
+  </script>
+</body>
+</html>
