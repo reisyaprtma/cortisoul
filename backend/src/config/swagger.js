@@ -100,6 +100,36 @@ const swaggerDocs = {
         responses: { 200: { description: 'OK' } },
       },
     },
+    '/health': {
+      get: {
+        tags: ['Health'],
+        summary: 'Health check',
+        responses: {
+          200: {
+            description: 'Service is healthy',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    code: { type: 'integer' },
+                    status: { type: 'string' },
+                    message: { type: 'string' },
+                    data: {
+                      type: 'object',
+                      properties: {
+                        uptime: { type: 'number' },
+                        timestamp: { type: 'string' },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
     '/journals': {
       get: {
         tags: ['Journals'],
@@ -125,6 +155,30 @@ const swaggerDocs = {
           },
         },
         responses: { 201: { description: 'Created' } },
+      },
+    },
+    '/ai/predict': {
+      post: {
+        tags: ['AI'],
+        summary: 'Predict mental health label from text using Cortisoul V2',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  text: { type: 'string' },
+                },
+                required: ['text'],
+              },
+            },
+          },
+        },
+        responses: {
+          200: { description: 'Prediction result' },
+          400: { description: 'Bad request' },
+          500: { description: 'Internal server error' },
+        },
       },
     },
     '/journals/stress-levels': {

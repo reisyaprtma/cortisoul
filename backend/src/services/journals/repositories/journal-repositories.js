@@ -1,21 +1,36 @@
 import { nanoid } from 'nanoid';
-import pool from '../../../databases/index.js';
+import pool from '../../../config/database.js';
 
 class JournalRepositories {
   constructor() {
     this._pool = pool;
   }
 
-  async createJournal({ title, content, owner }) {
+  async createJournal({
+    title,
+    content,
+    owner,
+    stressScore = null,
+    emotion = null,
+  }) {
     const id = nanoid(16);
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;
 
     const query = {
-      text: `INSERT INTO journals(id, title, content, created_at, updated_at, owner)
-              VALUES($1, $2, $3, $4, $5, $6)
+      text: `INSERT INTO journals(id, title, content, created_at, updated_at, stress_score, emotion, owner)
+              VALUES($1, $2, $3, $4, $5, $6, $7, $8)
               RETURNING id`,
-      values: [id, title, content, createdAt, updatedAt, owner],
+      values: [
+        id,
+        title,
+        content,
+        createdAt,
+        updatedAt,
+        stressScore,
+        emotion,
+        owner,
+      ],
     };
 
     const result = await this._pool.query(query);

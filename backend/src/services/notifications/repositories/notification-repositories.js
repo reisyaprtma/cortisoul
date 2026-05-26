@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import pool from '../../../databases/index.js';
+import pool from '../../../config/database.js';
 
 class NotificationRepositories {
   constructor() {

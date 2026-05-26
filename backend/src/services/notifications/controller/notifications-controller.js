@@ -2,7 +2,7 @@ import InvariantError from '../../../exceptions/invariant-error.js';
 import NotFoundError from '../../../exceptions/not-found-error.js';
 import response from '../../../utils/response.js';
 import notificationRepositories from '../repositories/notification-repositories.js';
-import { sendPushNotifications } from '../utils/push-helper.js';
+import { sendPushNotifications } from '../../../utils/push-helper.js';
 
 export const subscribe = async (req, res, next) => {
   const { endpoint, keys } = req.validated;
@@ -57,25 +57,4 @@ export const testNotification = async (req, res, next) => {
   const successCount = await sendPushNotifications(subscriptions, payload);
 
   return response(res, 200, `Notification sent to ${successCount} devices`);
-};
-
-export const triggerDailyNotifications = async (req, res, next) => {
-  const subscriptions = await notificationRepositories.getAllSubscriptions();
-
-  if (!subscriptions) {
-    return next(new NotFoundError('No subscriptions found'));
-  }
-
-  const payload = JSON.stringify({
-    title: 'Time for Daily Journal!',
-    body: "How are you feeling today? Let's fill in your daily journal on Cortisoul.",
-  });
-
-  const successCount = await sendPushNotifications(subscriptions, payload);
-
-  return response(
-    res,
-    200,
-    `Daily notifications sent to ${successCount} out of ${subscriptions.length} devices`
-  );
 };
