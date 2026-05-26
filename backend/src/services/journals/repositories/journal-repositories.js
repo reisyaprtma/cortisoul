@@ -1,12 +1,18 @@
 import { nanoid } from 'nanoid';
-import pool from '../../../databases/index.js';
+import pool from '../../../config/database.js';
 
 class JournalRepositories {
   constructor() {
     this._pool = pool;
   }
 
-  async createJournal({ title, content, owner, stressScore = null, emotion = null }) {
+  async createJournal({
+    title,
+    content,
+    owner,
+    stressScore = null,
+    emotion = null,
+  }) {
     const id = nanoid(16);
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;

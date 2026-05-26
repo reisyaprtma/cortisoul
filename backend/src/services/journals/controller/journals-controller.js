@@ -5,13 +5,13 @@ import journalRepositories from '../repositories/journal-repositories.js';
 import AuthorizationError from '../../../exceptions/authorization-error.js';
 import { getWeekRange, WEEK_DAYS, formatToYmd } from '../../../utils/date.js';
 import { journalToModel } from '../../../utils/mapDBToModel.js';
-import { predictText } from '../../predicts/services/predict-services.js';
+import { predictService } from '../../predicts/services/predict-services.js';
 
 export const createJournal = async (req, res, next) => {
   const { title, content } = req.validated;
   const { id: owner } = req.user;
 
-  const prediction = await predictText(content);
+  const prediction = await predictService(content);
   if (!prediction) {
     console.error('[AI] Prediction failed');
   }
