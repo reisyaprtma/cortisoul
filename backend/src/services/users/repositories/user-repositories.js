@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import bcrypt from 'bcrypt';
-import pool from '../../../databases/index.js';
+import pool from '../../../config/database.js';
 
 class UserRepositories {
   constructor() {
