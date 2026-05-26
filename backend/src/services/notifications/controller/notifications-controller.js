@@ -2,7 +2,7 @@ import InvariantError from '../../../exceptions/invariant-error.js';
 import NotFoundError from '../../../exceptions/not-found-error.js';
 import response from '../../../utils/response.js';
 import notificationRepositories from '../repositories/notification-repositories.js';
-import { sendPushNotifications } from '../utils/push-helper.js';
+import { sendPushNotifications } from '../../../utils/push-helper.js';
 
 export const subscribe = async (req, res, next) => {
   const { endpoint, keys } = req.validated;

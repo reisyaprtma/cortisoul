@@ -4,31 +4,46 @@ import response from '../../../utils/response.js';
 import journalRepositories from '../repositories/journal-repositories.js';
 import AuthorizationError from '../../../exceptions/authorization-error.js';
 import { getWeekRange, WEEK_DAYS, formatToYmd } from '../../../utils/date.js';
+import { journalToModel } from '../../../utils/mapDBToModel.js';
+import { predictText } from '../../predicts/service/ai-service.js';
 
 export const createJournal = async (req, res, next) => {
   const { title, content } = req.validated;
   const { id: owner } = req.user;
 
+  const prediction = await predictText(content);
+  if (!prediction) {
+    console.error('[AI] Prediction failed');
+  }
+
+  const stressScoreValue = parseFloat(prediction.stress_score.toFixed(3));
+
   const journal = await journalRepositories.createJournal({
     title,
     content,
+    stressScore: stressScoreValue,
+    emotion: prediction?.prediksi_label ?? null,
     owner,
   });
   if (!journal) {
     return next(new InvariantError('Jurnal gagal ditambahkan'));
   }
 
-  return response(res, 201, 'Jurnal berhasil ditambahkan', {
-    journalId: journal,
-  });
+  const responseData = { journalId: journal };
+  if (prediction) {
+    responseData.prediction = prediction;
+  }
+
+  return response(res, 201, 'Jurnal berhasil ditambahkan', responseData);
 };
 
 export const getJournals = async (req, res) => {
   const { id: owner } = req.user;
   const journals = await journalRepositories.getJournals(owner);
+  const mapped = Array.isArray(journals) ? journals.map(journalToModel) : [];
 
   return response(res, 200, 'Jurnal sukses ditampilkan', {
-    journals: journals,
+    journals: mapped,
   });
 };
 
@@ -50,7 +65,7 @@ export const getJournalById = async (req, res, next) => {
   }
 
   return response(res, 200, 'Jurnal sukses ditampilkan', {
-    journal: journalExists,
+    journal: journalToModel(journalExists),
   });
 };
 
@@ -79,7 +94,7 @@ export const editJournalById = async (req, res, next) => {
   }
 
   return response(res, 200, 'Jurnal berhasil diperbarui', {
-    journal: journal,
+    journal: journalToModel(journal),
   });
 };
 
@@ -112,13 +127,10 @@ export const getWeeklyStress = async (req, res) => {
     end
   );
 
-  // Build stress levels for each day of the week (Mon-Sun)
   const stressMap = new Map();
   for (const row of stressRows) {
-    stressMap.set(
-      formatToYmd(new Date(row.date)),
-      parseFloat(row.average_score)
-    );
+    const avgScore = parseFloat(row.average_score);
+    stressMap.set(formatToYmd(new Date(row.date)), avgScore);
   }
 
   const monday = new Date(start);
@@ -130,7 +142,7 @@ export const getWeeklyStress = async (req, res) => {
     return {
       date: dateStr,
       day,
-      averageScore: stressMap.get(dateStr) ?? null,
+      averageScore: stressMap.get(dateStr),
     };
   });
 

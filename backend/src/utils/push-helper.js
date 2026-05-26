@@ -1,5 +1,5 @@
 import webpush from 'web-push';
-import notificationRepositories from '../repositories/notification-repositories.js';
+import notificationRepositories from '../services/notifications/repositories/notification-repositories.js';
 
 // VAPID details configuration
 try {

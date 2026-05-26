@@ -127,6 +127,30 @@ const swaggerDocs = {
         responses: { 201: { description: 'Created' } },
       },
     },
+    '/ai/predict': {
+      post: {
+        tags: ['AI'],
+        summary: 'Predict mental health label from text using Cortisoul V2',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  text: { type: 'string' },
+                },
+                required: ['text'],
+              },
+            },
+          },
+        },
+        responses: {
+          200: { description: 'Prediction result' },
+          400: { description: 'Bad request' },
+          500: { description: 'Internal server error' },
+        },
+      },
+    },
     '/journals/stress-levels': {
       get: {
         tags: ['Journals'],

@@ -1,6 +1,6 @@
 import cron from 'node-cron';
 import notificationRepositories from '../repositories/notification-repositories.js';
-import { sendPushNotifications } from '../utils/push-helper.js';
+import { sendPushNotifications } from '../../../utils/push-helper.js';
 
 const sendDailyNotifications = async () => {
   try {
@@ -29,7 +29,7 @@ const sendDailyNotifications = async () => {
 // Menjalankan tugas setiap hari pada jam 21:00
 const startCronJob = () => {
   cron.schedule(
-    '* * * * *',
+    '0 21 * * *',
     () => {
       sendDailyNotifications();
     },
