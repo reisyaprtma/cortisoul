@@ -4,9 +4,9 @@ import logger from '../config/logger.js';
 
 const TokenManager = {
   generateAccessToken: (payload) =>
-    jwt.sign(payload, process.env.ACCESS_TOKEN_KEY),
+    jwt.sign(payload, process.env.ACCESS_TOKEN_KEY, { expiresIn: '25m' }),
   generateRefreshToken: (payload) =>
-    jwt.sign(payload, process.env.REFRESH_TOKEN_KEY),
+    jwt.sign(payload, process.env.REFRESH_TOKEN_KEY, { expiresIn: '7d' }),
   verifyRefreshToken: (refreshToken) => {
     try {
       const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
