@@ -1,11 +1,12 @@
-import { Router } from 'express';
+import express from 'express';
 import { createUser, getUserById } from '../controller/users-controller.js';
 import { validate } from '../../../middlewares/validate.js';
 import { userPayloadSchema } from '../validator/schema.js';
+import { registerLimiter } from '../../../middlewares/rate-limit.js';
 
-const router = Router();
+const routes = express.Router();
 
-router.post('/', validate(userPayloadSchema), createUser);
-router.get('/:id', getUserById);
+routes.post('/', registerLimiter, validate(userPayloadSchema), createUser);
+routes.get('/:id', getUserById);
 
-export default router;
+export default routes;
