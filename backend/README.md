@@ -6,10 +6,13 @@ REST API untuk aplikasi **Cortisoul**, yaitu layanan backend berbasis Node.js.
 
 - [Node.js](https://nodejs.org/)
 - [Express](https://expressjs.com/)
+- [pnpm](https://pnpm.io/)
 - [PostgreSQL](https://www.postgresql.org/)
+- [Redis](https://redis.io/)
 - [Joi](https://joi.dev/)
 - [JSON Web Token](https://jwt.io/)
 - [Swagger UI](https://swagger.io/tools/swagger-ui/)
+- [Docker](https://www.docker.com/)
 
 ## Prasyarat
 
@@ -26,34 +29,44 @@ pnpm install
 
 ## Konfigurasi lingkungan
 
-Salin ke file `.env` di root folder `backend`
+Buat file `.env` di folder `backend` dan isi variabel berikut:
 
 ```env
-# Server
-HOST=localhost
 PORT=3000
 
-# Database
-PGUSER=[your-postgre-user]
-PGHOST=[your-postgre-host]
-PGPASSWORD=[your-postgre-pass]
-PGDATABASE=[your-postgre-database]
-PGPORT=5432
-
+# Database connection
 DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DATABASE
 
-# JWT (gunakan string acak yang kuat)
+# JWT secret
 ACCESS_TOKEN_KEY=your-access-token-secret
 REFRESH_TOKEN_KEY=your-refresh-token-secret
+
+# Web Push VAPID Keys
+VAPID_PUBLIC_KEY=your-vapid-public-key
+VAPID_PRIVATE_KEY=your-vapid-private-key
+VAPID_SUBJECT=mailto:admin@cortisoul.com
+
+# Predict Service URL
+PREDICT_SERVICE_URL=https://your-predict-service.example.com
+
+# Redis Configurations
+REDIS_URL=redis://localhost:6379
 ```
 
-| Variabel            | Keterangan                                                                   |
-| ------------------- | ---------------------------------------------------------------------------- |
-| `HOST`              | Host yang dipakai Swagger untuk URL server (mis. `localhost` atau `0.0.0.0`) |
-| `PORT`              | Port HTTP server                                                             |
-| `DATABASE_URL`      | Connection string PostgreSQL                                                 |
-| `ACCESS_TOKEN_KEY`  | Secret untuk menandatangani & memverifikasi access token                     |
-| `REFRESH_TOKEN_KEY` | Secret untuk refresh token                                                   |
+> Simpan semua nilai rahasia di file `.env`.
+> Gunakan nilai yang valid untuk `DATABASE_URL`, `ACCESS_TOKEN_KEY`, `REFRESH_TOKEN_KEY`, dan `VAPID key`.
+
+| Variabel              | Keterangan                                               |
+| --------------------- | -------------------------------------------------------- |
+| `PORT`                | Port HTTP server                                         |
+| `DATABASE_URL`        | Connection string PostgreSQL                             |
+| `ACCESS_TOKEN_KEY`    | Secret untuk menandatangani & memverifikasi access token |
+| `REFRESH_TOKEN_KEY`   | Secret untuk refresh token                               |
+| `VAPID_PUBLIC_KEY`    | Kunci publik Web Push untuk push notification            |
+| `VAPID_PRIVATE_KEY`   | Kunci privat Web Push untuk menandatangani notifikasi    |
+| `VAPID_SUBJECT`       | Subject email atau URL yang terkait Web Push             |
+| `PREDICT_SERVICE_URL` | URL endpoint layanan prediksi eksternal                  |
+| `REDIS_URL`           | URL koneksi Redis untuk caching dan session              |
 
 ## Database
 
@@ -65,17 +78,10 @@ pnpm migrate up
 
 Migrasi yang tersedia:
 
-- `users` — akun pengguna
-- `authentications` — refresh token aktif
-- `journals` — entri jurnal (terhubung ke `users` via `owner`)
-
-### Data contoh (opsional)
-
-```bash
-pnpm seed
-```
-
-Script `seed-data.js` mengisi pengguna dan jurnal dummy untuk pengujian lokal.
+- `users`
+- `authentications`
+- `journals`
+- `notifications`
 
 ## Menjalankan server
 
@@ -87,12 +93,12 @@ Script `seed-data.js` mengisi pengguna dan jurnal dummy untuk pengujian lokal.
 
 Setelah server berjalan, buka:
 
-- **API:** `http://localhost:3000` (sesuai `PORT`)
+- **API:** `http://localhost:3000`
 - **Dokumentasi Swagger:** `http://localhost:3000/api-docs`
 
 ## Lisensi
 
-ISC — lihat `package.json`.
+ISC.
 
 ## Author
 
