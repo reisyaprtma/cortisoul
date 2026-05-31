@@ -86,6 +86,78 @@ function normalizeEmotionSummary(
     .filter((e) => e.emotion.length > 0);
 }
 
+// ─── Client-side weekly computation (fallback) ────────────────────────────────
+// Digunakan sebagai fallback ketika endpoint /stress-levels dan /emotions
+// mengembalikan data kosong (misal: bug filter tanggal di backend SQL).
+
+const CLIENT_WEEK_DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+
+/** Dapatkan awal minggu (Senin 00:00:00) berdasarkan waktu lokal browser */
+function getClientWeekStart(): Date {
+  const now = new Date();
+  const day = now.getDay(); // 0=Min, 1=Sen, ...
+  const delta = day === 0 ? -6 : 1 - day;
+  const monday = new Date(now);
+  monday.setDate(now.getDate() + delta);
+  monday.setHours(0, 0, 0, 0);
+  return monday;
+}
+
+/**
+ * Hitung rata-rata stress per hari minggu ini dari data jurnal lokal.
+ * Digunakan sebagai fallback ketika API weekly-stress mengembalikan kosong.
+ */
+function computeWeeklyStressFromJournals(journals: Journal[]): StressLevel[] {
+  const monday = getClientWeekStart();
+  const sundayEnd = new Date(monday);
+  sundayEnd.setDate(monday.getDate() + 7); // exclusive upper bound
+
+  // Kelompokkan skor per tanggal (YYYY-MM-DD lokal)
+  const scoresByDate = new Map<string, number[]>();
+  journals.forEach((j) => {
+    if (j.stress_score == null || isNaN(j.stress_score)) return;
+    const d = new Date(j.created_at);
+    if (d < monday || d >= sundayEnd) return;
+    // toLocaleDateString("en-CA") menghasilkan format YYYY-MM-DD
+    const dateStr = d.toLocaleDateString("en-CA");
+    if (!scoresByDate.has(dateStr)) scoresByDate.set(dateStr, []);
+    scoresByDate.get(dateStr)!.push(j.stress_score);
+  });
+
+  return CLIENT_WEEK_DAYS.map((day, i) => {
+    const date = new Date(monday);
+    date.setDate(monday.getDate() + i);
+    const dateStr = date.toLocaleDateString("en-CA");
+    const scores = scoresByDate.get(dateStr) || [];
+    const avg =
+      scores.length > 0
+        ? scores.reduce((a, b) => a + b, 0) / scores.length
+        : null;
+    return { date: dateStr, day, averageScore: avg };
+  });
+}
+
+/**
+ * Hitung ringkasan emosi minggu ini dari data jurnal lokal.
+ * Digunakan sebagai fallback ketika API weekly-emotion mengembalikan kosong.
+ */
+function computeWeeklyEmotionFromJournals(journals: Journal[]): EmotionSummary[] {
+  const monday = getClientWeekStart();
+  const sundayEnd = new Date(monday);
+  sundayEnd.setDate(monday.getDate() + 7);
+
+  const counts = new Map<string, number>();
+  journals.forEach((j) => {
+    const d = new Date(j.created_at);
+    if (d < monday || d >= sundayEnd || !j.emotion) return;
+    counts.set(j.emotion, (counts.get(j.emotion) || 0) + 1);
+  });
+
+  return Array.from(counts.entries())
+    .map(([emotion, count]) => ({ emotion, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
 // ─── Stress Chart ─────────────────────────────────────────────────────────────
 
 function StressChart({ stressLevels }: { stressLevels: StressLevel[] }) {
@@ -470,13 +542,19 @@ export default function DashboardPage() {
   const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const [journalsRes, stressRes, emotionRes] = await Promise.all([
+      // Promise.allSettled: salah satu endpoint gagal tidak membatalkan yang lain
+      const [journalsResult, stressResult, emotionResult] = await Promise.allSettled([
         journalsApi.getAll(),
         journalsApi.getWeeklyStress(),
         journalsApi.getWeeklyEmotion(),
       ]);
 
-      const allJournals = journalsRes.data?.journals || [];
+      // ── Journals ──────────────────────────────────────────────────────────
+      const allJournals =
+        journalsResult.status === "fulfilled"
+          ? journalsResult.value.data?.journals || []
+          : [];
+
       const sortedJournals = [...allJournals].sort(
         (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
       );
@@ -487,12 +565,35 @@ export default function DashboardPage() {
         allJournals.find((j: Journal) => new Date(j.created_at).toDateString() === today) ?? null
       );
 
-      setStressLevels(normalizeStressLevels(stressRes.data?.stressLevels || []));
-      setEmotionSummary(
-        normalizeEmotionSummary(emotionRes.data?.emotionSummary || [])
+      // ── Stress levels ─────────────────────────────────────────────────────
+      // Coba pakai data API; jika kosong fallback ke perhitungan client-side
+      // dari data jurnal (workaround untuk bug filter tanggal di backend SQL).
+      const apiStressLevels =
+        stressResult.status === "fulfilled"
+          ? normalizeStressLevels(stressResult.value.data?.stressLevels || [])
+          : [];
+      const hasApiStressData = apiStressLevels.some((s) =>
+        isStressScoreDefined(s.averageScore)
       );
-    } catch {
-      // ignore
+      setStressLevels(
+        hasApiStressData
+          ? apiStressLevels
+          : computeWeeklyStressFromJournals(allJournals)
+      );
+
+      // ── Emotion summary ───────────────────────────────────────────────────
+      // Sama: coba API dulu, fallback ke client-side jika kosong.
+      const apiEmotionSummary =
+        emotionResult.status === "fulfilled"
+          ? normalizeEmotionSummary(emotionResult.value.data?.emotionSummary || [])
+          : [];
+      setEmotionSummary(
+        apiEmotionSummary.length > 0
+          ? apiEmotionSummary
+          : computeWeeklyEmotionFromJournals(allJournals)
+      );
+    } catch (err) {
+      console.error("[Dashboard] Gagal memuat data:", err);
     } finally {
       setIsLoading(false);
     }
