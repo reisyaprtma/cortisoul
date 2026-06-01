@@ -229,6 +229,20 @@ export const journalsApi = {
     request<{ emotionSummary: EmotionSummary[] }>("/journals/emotions"),
 };
 
+// ─── Reflections API ───────────────────────────────────────────────────────────
+
+export const reflectionsApi = {
+  /** POST /journals/{id}/reflections — Generate AI reflection untuk jurnal */
+  generate: (journalId: string) =>
+    request<{ reflection: Reflection }>(`/journals/${journalId}/reflections`, {
+      method: "POST",
+    }),
+
+  /** GET /journals/{id}/reflections — Ambil reflection yang sudah ada */
+  get: (journalId: string) =>
+    request<{ reflection: Reflection }>(`/journals/${journalId}/reflections`),
+};
+
 // ─── Predict API ───────────────────────────────────────────────────────────────
 
 export const predictApi = {
@@ -314,6 +328,14 @@ export interface Journal {
   suggestion?: string;
   created_at: string;
   updated_at?: string;
+}
+
+export interface Reflection {
+  id?: string;
+  journal_id?: string;
+  reflection_text: string;
+  teks_refleksi?: string;
+  created_at?: string;
 }
 
 export interface AiPrediction {

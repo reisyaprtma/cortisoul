@@ -76,6 +76,7 @@ export default function HistoryPage() {
   };
 
   const displayStress = (score: number) => (score);
+  console.log(journals);
 
   const getStressLabel = (score: number | null | undefined) => {
     if (score == null) return "-";

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { journalsApi, predictApi, getReflectionText, type Journal } from "@/lib/api";
+import { journalsApi, reflectionsApi, type Journal, type Reflection } from "@/lib/api";
 
 export default function JournalDetailPage() {
   const params = useParams();
@@ -70,24 +70,39 @@ export default function JournalDetailPage() {
   };
 
   const handleShowReflection = async () => {
-    if (!journal?.content.trim()) {
-      setReflectionError("Isi jurnal kosong, tidak bisa dibuat refleksi");
-      return;
-    }
     setIsLoadingReflection(true);
     setReflectionError("");
     try {
-      const res = await predictApi.predict(journal.content);
-      const prediction = res.data?.prediction;
-      if (!prediction) {
-        setReflectionError("Tidak ada hasil dari layanan AI");
+      // Coba GET reflection yang sudah ada terlebih dahulu
+      let reflection: Reflection | null = null;
+      try {
+        const getRes = await reflectionsApi.get(id);
+        reflection = getRes.data?.reflection ?? null;
+      } catch {
+        // Reflection belum ada, lanjut ke POST
+      }
+
+      if (!reflection) {
+        // Generate reflection baru via POST
+        const postRes = await reflectionsApi.generate(id);
+        reflection = postRes.data?.reflection ?? null;
+      }
+
+      if (!reflection) {
+        setReflectionError("Tidak ada hasil refleksi dari AI");
         return;
       }
-      const text = getReflectionText(prediction);
-      if (!text) {
+
+      const text =
+        reflection.reflection_text ||
+        reflection.teks_refleksi ||
+        "";
+
+      if (!text.trim()) {
         setReflectionError("Teks refleksi tidak tersedia dalam respons AI");
         return;
       }
+
       setReflectionText(text);
     } catch (err: unknown) {
       setReflectionError(
@@ -165,7 +180,7 @@ export default function JournalDetailPage() {
 
   const stressColor = getStressColor(journal.stress_score);
   const stressLabel = getStressLabel(journal.stress_score);
-
+  console.log(journal);
   return (
     <div className="app-page animate-fadeIn">
       {/* Breadcrumb */}
