@@ -128,12 +128,12 @@ export default function NotificationSetup() {
     return (
       <div
         style={{
-          background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+          background: "linear-gradient(135deg, var(--accent-teal) 0%, var(--teal-badge) 100%)",
           padding: "10px 20px",
           display: "flex",
           flexDirection: "column",
           gap: "10px",
-          boxShadow: "0 4px 12px rgba(16, 185, 129, 0.15)",
+          boxShadow: "0 4px 12px var(--accent-teal-glow)",
         }}
       >
         <div
@@ -160,7 +160,7 @@ export default function NotificationSetup() {
               style={{
                 padding: "6px 16px",
                 background: "#fff",
-                color: "#10b981",
+                color: "var(--accent-teal)",
                 border: "none",
                 borderRadius: "8px",
                 fontSize: "13px",
@@ -183,7 +183,7 @@ export default function NotificationSetup() {
                     height="13"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="#10b981"
+                    stroke="var(--accent-teal)"
                     strokeWidth="2.5"
                     strokeLinecap="round"
                   >
@@ -232,7 +232,7 @@ export default function NotificationSetup() {
   return (
     <div
       style={{
-        background: "linear-gradient(135deg, #0ea5e9 0%, #8b5cf6 100%)",
+        background: "linear-gradient(135deg, var(--accent-teal) 0%, var(--accent-blue-light) 100%)",
         padding: "10px 20px",
         display: "flex",
         alignItems: "center",
@@ -255,7 +255,7 @@ export default function NotificationSetup() {
           style={{
             padding: "6px 16px",
             background: "#fff",
-            color: "#0ea5e9",
+            color: "var(--accent-teal)",
             border: "none",
             borderRadius: "8px",
             fontSize: "13px",
@@ -275,7 +275,7 @@ export default function NotificationSetup() {
                 height="13"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#0ea5e9"
+                stroke="var(--accent-teal)"
                 strokeWidth="2.5"
                 strokeLinecap="round"
               >
