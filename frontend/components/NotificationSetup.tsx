@@ -128,12 +128,16 @@ export default function NotificationSetup() {
     return (
       <div
         style={{
-          background: "linear-gradient(135deg, var(--accent-teal) 0%, var(--teal-badge) 100%)",
-          padding: "10px 20px",
+          background: "var(--bg-card)",
+          border: "1px solid #10b981",
+          borderRadius: "16px",
+          padding: "24px clamp(16px, 4vw, 32px)",
+          boxShadow: "0 4px 24px rgba(16, 185, 129, 0.05)",
           display: "flex",
           flexDirection: "column",
-          gap: "10px",
-          boxShadow: "0 4px 12px var(--accent-teal-glow)",
+          gap: "14px",
+          marginBottom: "24px",
+          transition: "all 0.3s ease",
         }}
       >
         <div
@@ -141,49 +145,66 @@ export default function NotificationSetup() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            gap: "12px",
+            gap: "20px",
             flexWrap: "wrap",
             width: "100%",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <span style={{ fontSize: "18px" }}>🎉</span>
-            <p style={{ color: "#fff", fontSize: "13.5px", fontWeight: 500, margin: 0 }}>
-              Notifikasi pengingat harian berhasil diaktifkan!
-            </p>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: "16px", flex: 1, minWidth: "260px" }}>
+            <div 
+              style={{ 
+                fontSize: "24px", 
+                background: "rgba(16, 185, 129, 0.1)", 
+                padding: "12px", 
+                borderRadius: "12px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#10b981",
+                flexShrink: 0
+              }}
+            >
+              🎉
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+              <h3 style={{ color: "var(--text-primary)", fontSize: "16px", fontWeight: 700, margin: 0 }}>
+                Notifikasi Berhasil Diaktifkan!
+              </h3>
+              <p style={{ color: "var(--text-secondary)", fontSize: "13.5px", fontWeight: 400, margin: 0, lineHeight: 1.5 }}>
+                Hebat! Sekarang Anda dapat menguji notifikasi push ini secara real-time di perangkat Anda.
+              </p>
+            </div>
           </div>
 
-          <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
+          <div style={{ display: "flex", gap: "10px", flexShrink: 0, flexWrap: "wrap" }}>
             <button
               onClick={sendTestPush}
               disabled={testingNotif}
               style={{
-                padding: "6px 16px",
-                background: "#fff",
-                color: "var(--accent-teal)",
+                padding: "10px 20px",
+                background: "#10b981",
+                color: "#fff",
                 border: "none",
-                borderRadius: "8px",
-                fontSize: "13px",
+                borderRadius: "10px",
+                fontSize: "13.5px",
                 fontWeight: 700,
                 cursor: testingNotif ? "not-allowed" : "pointer",
                 opacity: testingNotif ? 0.8 : 1,
                 display: "flex",
                 alignItems: "center",
-                gap: "6px",
-                transition: "all 0.2s",
+                gap: "8px",
+                transition: "all 0.2s ease",
               }}
             >
               {testingNotif ? (
                 <>
                   <svg
-                    style={{
-                      animation: "spin 1s linear infinite",
-                    }}
-                    width="13"
-                    height="13"
+                    style={{ animation: "spin 1s linear infinite" }}
+                    width="14"
+                    height="14"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="var(--accent-teal)"
+                    stroke="#fff"
                     strokeWidth="2.5"
                     strokeLinecap="round"
                   >
@@ -192,21 +213,21 @@ export default function NotificationSetup() {
                   Mengirim...
                 </>
               ) : (
-                "Kirim Notifikasi Uji Coba"
+                "Kirim Uji Coba"
               )}
             </button>
             <button
               onClick={() => setJustGranted(false)}
               style={{
-                padding: "6px 12px",
-                background: "rgba(255,255,255,0.2)",
-                color: "#fff",
-                border: "none",
-                borderRadius: "8px",
-                fontSize: "13px",
+                padding: "10px 18px",
+                background: "var(--border-light)",
+                color: "var(--text-secondary)",
+                border: "1px solid var(--border-light)",
+                borderRadius: "10px",
+                fontSize: "13.5px",
+                fontWeight: 500,
                 cursor: "pointer",
-                backdropFilter: "blur(4px)",
-                transition: "all 0.2s",
+                transition: "all 0.2s ease",
               }}
             >
               Selesai
@@ -214,16 +235,26 @@ export default function NotificationSetup() {
           </div>
         </div>
         {testMessage && (
-          <p
+          <div
             style={{
-              color: "rgba(255,255,255,0.9)",
-              fontSize: "12px",
-              margin: "0 0 0 28px",
-              fontWeight: 400,
+              background: "rgba(16, 185, 129, 0.06)",
+              borderLeft: "4px solid #10b981",
+              padding: "10px 16px",
+              borderRadius: "0 8px 8px 0",
+              marginLeft: "52px",
             }}
           >
-            {testMessage}
-          </p>
+            <p
+              style={{
+                color: "var(--text-primary)",
+                fontSize: "13px",
+                margin: 0,
+                fontWeight: 500,
+              }}
+            >
+              {testMessage}
+            </p>
+          </div>
         )}
       </div>
     );
@@ -232,50 +263,76 @@ export default function NotificationSetup() {
   return (
     <div
       style={{
-        background: "linear-gradient(135deg, var(--accent-teal) 0%, var(--accent-blue-light) 100%)",
-        padding: "10px 20px",
+        background: "var(--bg-card)",
+        border: "1px solid var(--border-light)",
+        borderRadius: "16px",
+        padding: "24px clamp(16px, 4vw, 32px)",
+        boxShadow: "0 4px 24px rgba(61, 90, 90, 0.04)",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        gap: "12px",
+        gap: "24px",
         flexWrap: "wrap",
+        marginBottom: "24px",
+        transition: "all 0.3s ease",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <span style={{ fontSize: "18px" }}>🔔</span>
-        <p style={{ color: "#fff", fontSize: "13.5px", fontWeight: 500 }}>
-          Aktifkan pengingat harian untuk menulis jurnal
-        </p>
+      <div style={{ display: "flex", alignItems: "flex-start", gap: "16px", flex: 1, minWidth: "260px" }}>
+        <div 
+          style={{ 
+            fontSize: "24px", 
+            background: "rgba(61, 90, 90, 0.08)", 
+            padding: "12px", 
+            borderRadius: "12px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "var(--accent-teal)",
+            flexShrink: 0
+          }}
+        >
+          🔔
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+          <h3 style={{ color: "var(--text-primary)", fontSize: "16px", fontWeight: 700, margin: 0 }}>
+            Aktifkan Pengingat Jurnal Harian
+          </h3>
+          <p style={{ color: "var(--text-secondary)", fontSize: "13.5px", fontWeight: 400, margin: 0, lineHeight: 1.5 }}>
+            Dapatkan notifikasi setiap pukul 21:00 agar tetap konsisten menulis jurnal harian dan memantau kesehatan mentalmu.
+          </p>
+        </div>
       </div>
 
-      <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
+      <div style={{ display: "flex", gap: "10px", flexShrink: 0, flexWrap: "wrap" }}>
         <button
           onClick={subscribeToNotifications}
           disabled={status === "loading"}
           style={{
-            padding: "6px 16px",
-            background: "#fff",
-            color: "var(--accent-teal)",
+            padding: "10px 24px",
+            background: "var(--accent-teal)",
+            color: "#fff",
             border: "none",
-            borderRadius: "8px",
-            fontSize: "13px",
+            borderRadius: "10px",
+            fontSize: "13.5px",
             fontWeight: 700,
             cursor: status === "loading" ? "not-allowed" : "pointer",
             display: "flex",
             alignItems: "center",
-            gap: "6px",
+            gap: "8px",
             opacity: status === "loading" ? 0.8 : 1,
+            boxShadow: "0 4px 12px var(--accent-teal-glow)",
+            transition: "all 0.2s ease",
           }}
         >
           {status === "loading" ? (
             <>
               <svg
-                className="animate-spin"
-                width="13"
-                height="13"
+                style={{ animation: "spin 1s linear infinite" }}
+                width="14"
+                height="14"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="var(--accent-teal)"
+                stroke="#fff"
                 strokeWidth="2.5"
                 strokeLinecap="round"
               >
@@ -290,14 +347,15 @@ export default function NotificationSetup() {
         <button
           onClick={handleDismiss}
           style={{
-            padding: "6px 12px",
-            background: "rgba(255,255,255,0.2)",
-            color: "#fff",
-            border: "none",
-            borderRadius: "8px",
-            fontSize: "13px",
+            padding: "10px 18px",
+            background: "var(--border-light)",
+            color: "var(--text-secondary)",
+            border: "1px solid var(--border-light)",
+            borderRadius: "10px",
+            fontSize: "13.5px",
+            fontWeight: 500,
             cursor: "pointer",
-            backdropFilter: "blur(4px)",
+            transition: "all 0.2s ease",
           }}
         >
           Nanti

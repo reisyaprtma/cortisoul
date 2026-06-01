@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { SidebarDesktop, MobileTopBar, MobileBottomNav } from "@/components/Sidebar";
-import NotificationSetup from "@/components/NotificationSetup";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -83,7 +82,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         }}
       >
         <MobileTopBar />
-        <NotificationSetup />
         <main
           style={{
             flex: 1,

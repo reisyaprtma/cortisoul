@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import { journalsApi, type Journal, type StressLevel, type EmotionSummary } from "@/lib/api";
+import NotificationSetup from "@/components/NotificationSetup";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -648,6 +649,8 @@ export default function DashboardPage() {
           Bagaimana perasaanmu hari ini? Yuk ceritakan lewat jurnal.
         </p>
       </div>
+
+      <NotificationSetup />
 
       {/* ── Quick CTA + Emosi Dominan ───────────────────────────────────────── */}
       <div className="grid-2-responsive" style={{ marginBottom: "20px" }}>
