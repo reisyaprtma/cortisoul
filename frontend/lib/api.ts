@@ -282,7 +282,7 @@ export const notificationsApi = {
   subscribe: (subscription: PushSubscriptionJSON) =>
     request("/notifications/subscribe", {
       method: "POST",
-      body: JSON.stringify({ subscription }),
+      body: JSON.stringify(subscription),
     }),
 
   /**
@@ -292,7 +292,7 @@ export const notificationsApi = {
   unsubscribe: (subscription: PushSubscriptionJSON) =>
     request("/notifications/subscribe", {
       method: "DELETE",
-      body: JSON.stringify({ subscription }),
+      body: JSON.stringify({ endpoint: subscription.endpoint }),
     }),
 
   /**
