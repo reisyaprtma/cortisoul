@@ -180,7 +180,8 @@ export default function JournalDetailPage() {
 
   const stressColor = getStressColor(journal.stress_score);
   const stressLabel = getStressLabel(journal.stress_score);
-  console.log(journal);
+  // console.log(journal);
+  console.log('refleksi: ', reflectionText);
   return (
     <div className="app-page animate-fadeIn">
       {/* Breadcrumb */}
