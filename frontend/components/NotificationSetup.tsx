@@ -166,7 +166,7 @@ export default function NotificationSetup() {
                 Notifikasi Berhasil Diaktifkan!
               </h3>
               <p style={{ color: "var(--text-secondary)", fontSize: "13.5px", fontWeight: 400, margin: 0, lineHeight: 1.5 }}>
-                Hebat! Sekarang Anda dapat menguji notifikasi push ini secara real-time di perangkat Anda.
+                Hebat! Sekarang Anda dapat menerima notifikasi pengingat jurnal setiap harinya.
               </p>
             </div>
           </div>
