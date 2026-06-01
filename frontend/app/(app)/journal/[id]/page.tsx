@@ -40,9 +40,25 @@ export default function JournalDetailPage() {
     }
   }, [id]);
 
+  const loadReflection = useCallback(async () => {
+    try {
+      const getRes = await reflectionsApi.get(id);
+      const reflection = getRes.data?.reflection;
+      if (reflection) {
+        const text = reflection.reflection_text || reflection.teks_refleksi;
+        if (text && text.trim()) {
+          setReflectionText(text.trim());
+        }
+      }
+    } catch {
+      // Reflection belum ada di database, abaikan saja
+    }
+  }, [id]);
+
   useEffect(() => {
     loadJournal();
-  }, [loadJournal]);
+    loadReflection();
+  }, [loadJournal, loadReflection]);
 
   const handleSave = async () => {
     if (!editTitle.trim() || !editContent.trim()) {
@@ -540,45 +556,49 @@ export default function JournalDetailPage() {
       {/* Teks Refleksi AI */}
       {!isEditing && (
         <div style={{ marginTop: "20px" }}>
-          <button
-            type="button"
-            onClick={handleShowReflection}
-            disabled={isLoadingReflection}
-            style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                marginTop:10,
-                flexShrink: 0,
-                background: "#3d5a5a",
-                color: "#ffffff",
-                padding: "12px 24px",
-                borderRadius: "9999px",
-                fontSize: "11px",
-                fontWeight: 700,
-                letterSpacing: "0.08em",
-                textDecoration: "none",
-                textTransform: "uppercase",
-                boxShadow: "0 4px 12px rgba(61, 90, 90, 0.28)",
-                whiteSpace: "nowrap",
-              }}
-          >
-            {isLoadingReflection ? (
-              <svg className="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
-                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-              </svg>
-            ) : (
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-              </svg>
-            )}
-            {isLoadingReflection ? "Memuat Refleksi..." : "Tampilkan Teks Refleksi"}
-          </button>
+          {!reflectionText && (
+            <>
+              <button
+                type="button"
+                onClick={handleShowReflection}
+                disabled={isLoadingReflection}
+                style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    marginTop: 10,
+                    flexShrink: 0,
+                    background: "#3d5a5a",
+                    color: "#ffffff",
+                    padding: "12px 24px",
+                    borderRadius: "9999px",
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    letterSpacing: "0.08em",
+                    textDecoration: "none",
+                    textTransform: "uppercase",
+                    boxShadow: "0 4px 12px rgba(61, 90, 90, 0.28)",
+                    whiteSpace: "nowrap",
+                  }}
+              >
+                {isLoadingReflection ? (
+                  <svg className="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                  </svg>
+                ) : (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                )}
+                {isLoadingReflection ? "Memuat Refleksi..." : "Tampilkan Teks Refleksi"}
+              </button>
 
-          {reflectionError && (
-            <p style={{ color: "#dc2626", fontSize: "13px", marginTop: "10px" }}>
-              {reflectionError}
-            </p>
+              {reflectionError && (
+                <p style={{ color: "#dc2626", fontSize: "13px", marginTop: "10px" }}>
+                  {reflectionError}
+                </p>
+              )}
+            </>
           )}
 
           {reflectionText && (
