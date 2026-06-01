@@ -33,10 +33,6 @@ export default function NotificationSetup() {
 
   useEffect(() => {
     checkCurrentPermission();
-
-    // Cek apakah user sudah pernah dismiss banner ini
-    const wasDismissed = localStorage.getItem("cortisoul_notif_dismissed");
-    if (wasDismissed) setDismissed(true);
   }, [checkCurrentPermission]);
 
   const urlBase64ToUint8Array = (base64String: string): Uint8Array => {
@@ -109,7 +105,6 @@ export default function NotificationSetup() {
   }, []);
 
   const handleDismiss = () => {
-    localStorage.setItem("cortisoul_notif_dismissed", "true");
     setDismissed(true);
   };
 
@@ -129,10 +124,10 @@ export default function NotificationSetup() {
       <div
         style={{
           background: "var(--bg-card)",
-          border: "1px solid #10b981",
+          border: "1px solid var(--border-light)",
           borderRadius: "16px",
           padding: "24px clamp(16px, 4vw, 32px)",
-          boxShadow: "0 4px 24px rgba(16, 185, 129, 0.05)",
+          boxShadow: "0 4px 24px rgba(61, 90, 90, 0.04)",
           display: "flex",
           flexDirection: "column",
           gap: "14px",
