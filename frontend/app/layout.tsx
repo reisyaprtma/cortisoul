@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Cortisoul – Mental Wellness Journal",
   description:
     "Cortisoul helps you track your mental health, write journals, and understand your emotions through AI-powered insights.",
+  icons: {
+    icon: "/cortisoul-logo.png",
+  },
 };
 
 export const viewport: Viewport = {
