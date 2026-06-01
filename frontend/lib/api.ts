@@ -236,6 +236,7 @@ export const reflectionsApi = {
   generate: (journalId: string) =>
     request<{ reflection: Reflection }>(`/journals/${journalId}/reflections`, {
       method: "POST",
+      body: JSON.stringify({}),
     }),
 
   /** GET /journals/{id}/reflections — Ambil reflection yang sudah ada */

@@ -85,6 +85,7 @@ export default function JournalDetailPage() {
       if (!reflection) {
         // Generate reflection baru via POST
         const postRes = await reflectionsApi.generate(id);
+        console.log('[DEBUG] POST response:', JSON.stringify(postRes));
         reflection = postRes.data?.reflection ?? null;
       }
 
@@ -92,6 +93,8 @@ export default function JournalDetailPage() {
         setReflectionError("Tidak ada hasil refleksi dari AI");
         return;
       }
+
+      console.log('[DEBUG] reflection object:', JSON.stringify(reflection));
 
       const text =
         reflection.reflection_text ||
