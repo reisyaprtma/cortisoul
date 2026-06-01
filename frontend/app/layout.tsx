@@ -23,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="id" className="h-full" suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/cortisoul-logo.png" />
         {/* Prevent flash of wrong theme: read localStorage before first paint */}
         <script
           dangerouslySetInnerHTML={{
