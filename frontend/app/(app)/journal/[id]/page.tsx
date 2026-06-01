@@ -84,8 +84,14 @@ export default function JournalDetailPage() {
 
       if (!reflection) {
         // Generate reflection baru via POST
-        const postRes = await reflectionsApi.generate(id);
-        console.log('[DEBUG] POST response:', JSON.stringify(postRes));
+        let postRes;
+        try {
+          postRes = await reflectionsApi.generate(id);
+          console.log('[DEBUG] POST response:', JSON.stringify(postRes));
+        } catch (postErr: unknown) {
+          console.error('[DEBUG] POST error:', postErr instanceof Error ? postErr.message : postErr);
+          throw postErr;
+        }
         reflection = postRes.data?.reflection ?? null;
       }
 
