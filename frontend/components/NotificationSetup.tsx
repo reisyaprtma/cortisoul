@@ -73,8 +73,7 @@ export default function NotificationSetup() {
 
   const handleSubscribe = useCallback(async () => {
     if (!vapidPublicKey) {
-      console.warn("[Notif] NEXT_PUBLIC_VAPID_PUBLIC_KEY belum diset");
-      setErrorMsg("Konfigurasi VAPID key belum tersedia.");
+      setErrorMsg("VAPID key belum dikonfigurasi. Hubungi administrator.");
       return;
     }
 
@@ -297,7 +296,7 @@ export default function NotificationSetup() {
   }
 
   // ─── Dismissed: jangan tampilkan ──────────────────────────────────────────
-  if (dismissed || !vapidPublicKey) return null;
+  if (dismissed) return null;
 
   // ─── Idle: tampilkan banner ajakan subscribe ───────────────────────────────
   return (
