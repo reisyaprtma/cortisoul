@@ -146,7 +146,7 @@ export default function NotificationSetup() {
           }}
         >
           <div style={{ display: "flex", alignItems: "flex-start", gap: "16px", flex: 1, minWidth: "260px" }}>
-            <div 
+            {/* <div 
               style={{ 
                 fontSize: "24px", 
                 background: "rgba(16, 185, 129, 0.1)", 
@@ -160,7 +160,7 @@ export default function NotificationSetup() {
               }}
             >
               🎉
-            </div>
+            </div> */}
             <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
               <h3 style={{ color: "var(--text-primary)", fontSize: "16px", fontWeight: 700, margin: 0 }}>
                 Notifikasi Berhasil Diaktifkan!
@@ -273,7 +273,7 @@ export default function NotificationSetup() {
       }}
     >
       <div style={{ display: "flex", alignItems: "flex-start", gap: "16px", flex: 1, minWidth: "260px" }}>
-        <div 
+        {/* <div 
           style={{ 
             fontSize: "24px", 
             background: "rgba(61, 90, 90, 0.08)", 
@@ -287,13 +287,13 @@ export default function NotificationSetup() {
           }}
         >
           🔔
-        </div>
+        </div> */}
         <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
           <h3 style={{ color: "var(--text-primary)", fontSize: "16px", fontWeight: 700, margin: 0 }}>
             Aktifkan Pengingat Jurnal Harian
           </h3>
           <p style={{ color: "var(--text-secondary)", fontSize: "13.5px", fontWeight: 400, margin: 0, lineHeight: 1.5 }}>
-            Dapatkan notifikasi setiap pukul 21:00 agar tetap konsisten menulis jurnal harian dan memantau kesehatan mentalmu.
+            Dapatkan notifikasi agar tetap konsisten menulis jurnal harian dan memantau kesehatan mentalmu.
           </p>
         </div>
       </div>
