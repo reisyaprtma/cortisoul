@@ -469,7 +469,7 @@ export default function JournalDetailPage() {
             {journal.emotion && (
               <div style={{ display: "flex", gap: "16px" }}>
                 <div>
-                  <p style={{ fontSize: "12px", color: "var(--text-secondary)", marginBottom: "2px" }}>Emosi Terdeteksi</p>
+                  <p style={{ fontSize: "12px", color: "var(--text-secondary)", marginBottom: "2px" }}>Kondisi Mental Anda</p>
                   <p style={{ fontSize: "15px", fontWeight: 600, color: "var(--text-primary)", textTransform: "capitalize" }}>
                     {journal.emotion.charAt(0).toUpperCase() + journal.emotion.slice(1)}
                   </p>

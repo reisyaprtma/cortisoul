@@ -10,16 +10,14 @@ import NotificationSetup from "@/components/NotificationSetup";
 
 /** Warna unik per nama emosi (dari data backend) */
 const EMOTION_COLOR_MAP: Record<string, string> = {
-  happy: "#22c55e",
-  sad: "#3b82f6",
-  anxious: "#f97316",
-  angry: "#ef4444",
-  calm: "#14b8a6",
-  stressed: "#dc2626",
-  excited: "#8b5cf6",
-  neutral: "#64748b",
-  fear: "#a855f7",
-  love: "#ec4899",
+  suicidal: "#be123c",             // Deep Rose Red
+  depression: "#2563eb",           // Cool Deep Blue
+  normal: "#10b981",               // Calming Emerald Green
+  "personality disorder": "#8b5cf6", // Royal Violet
+  "personality_disorder": "#8b5cf6", // Fallback underscore
+  stress: "#ef4444",               // Alert Red
+  anxiety: "#f97316",              // Electric Orange
+  bipolar: "#ec4899",              // Dualistic Hot Pink
 };
 
 /** Kembalikan warna untuk emosi, fallback ke accent-blue */
@@ -51,7 +49,7 @@ function stressToDisplay(raw: number): number {
 }
 
 function displayStress(raw: number): string {
-  return stressToDisplay(raw).toFixed(2);
+  return raw.toFixed(2);
 }
 
 function getStressColor(raw: number | null | undefined): string {
@@ -406,18 +404,17 @@ function StressChart({ stressLevels }: { stressLevels: StressLevel[] }) {
 // ─── Emotion Panel ────────────────────────────────────────────────────────────
 
 function EmotionPanel({ emotionSummary }: { emotionSummary: EmotionSummary[] }) {
-  const PASTEL_DOTS = ["#CCFBF1", "#FCE7F3", "#DBEAFE", "#E2E8F0"];
-
   if (emotionSummary.length === 0) {
     return (
       <p style={{ fontSize: "15px", color: "#64748B", marginTop: "4px", lineHeight: 1.5 }}>
-        Belum ada data emosi minggu ini. Mulai menulis jurnal!
+        Belum ada data kondisi mental minggu ini. Mulai menulis jurnal!
       </p>
     );
   }
 
   const dominant = emotionSummary.reduce((a, b) => (a.count >= b.count ? a : b));
   const domName = formatEmotion(dominant.emotion);
+  const domColor = emotionColor(dominant.emotion);
   const totalCount = emotionSummary.reduce((s, e) => s + e.count, 0);
 
   return (
@@ -435,7 +432,8 @@ function EmotionPanel({ emotionSummary }: { emotionSummary: EmotionSummary[] }) 
           width: "16px",
           height: "16px",
           borderRadius: "50%",
-          background: PASTEL_DOTS[0],
+          background: domColor,
+          boxShadow: `0 0 8px ${domColor}80`,
           flexShrink: 0,
         }} />
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -445,12 +443,12 @@ function EmotionPanel({ emotionSummary }: { emotionSummary: EmotionSummary[] }) 
             color: "var(--text-secondary)",
             marginBottom: "4px",
           }}>
-            Emosi dominan
+            Kondisi mental dominan
           </p>
           <p style={{
             fontSize: "20px",
             fontWeight: 700,
-            color: "var(--text-primary)",
+            color: domColor,
             textTransform: "capitalize",
             lineHeight: 1.2,
           }}>
@@ -467,7 +465,6 @@ function EmotionPanel({ emotionSummary }: { emotionSummary: EmotionSummary[] }) 
         {emotionSummary.slice(0, 3).map((e, i) => {
           const pct = Math.round((e.count / totalCount) * 100);
           const col = emotionColor(e.emotion);
-          const dotColor = PASTEL_DOTS[i % PASTEL_DOTS.length];
           return (
             <div key={e.emotion ? e.emotion + i : i}>
               <div style={{
@@ -481,7 +478,8 @@ function EmotionPanel({ emotionSummary }: { emotionSummary: EmotionSummary[] }) 
                     width: "16px",
                     height: "16px",
                     borderRadius: "50%",
-                    background: dotColor,
+                    background: col,
+                    boxShadow: `0 0 6px ${col}60`,
                     flexShrink: 0,
                   }} />
                   <span style={{
@@ -498,8 +496,8 @@ function EmotionPanel({ emotionSummary }: { emotionSummary: EmotionSummary[] }) 
                   <span style={{
                     fontSize: "12px",
                     fontWeight: 600,
-                    color: "var(--text-primary)",
-                    background: "var(--bg-card-hover)",
+                    color: col,
+                    background: `${col}15`,
                     padding: "2px 8px",
                     borderRadius: "99px",
                   }}>
@@ -529,6 +527,7 @@ function EmotionPanel({ emotionSummary }: { emotionSummary: EmotionSummary[] }) 
     </>
   );
 }
+
 
 // ─── Dashboard Page ───────────────────────────────────────────────────────────
 
@@ -744,7 +743,7 @@ export default function DashboardPage() {
             lineHeight: 1.25,
             margin: "0 0 10px 0",
           }}>
-            Emosi Dominan Minggu ini
+            Kondisi Mental Dominan Minggu ini
           </h2>
           <p style={{
             fontSize: "15px",
@@ -908,7 +907,7 @@ export default function DashboardPage() {
                     {j.emotion && (
                       <span style={{
                         background: `${emotionColor(j.emotion)}15`,
-                        color: "var(--teal-badge)",
+                        color: emotionColor(j.emotion),
                         padding: "2px 8px", borderRadius: "99px",
                         fontSize: "11px", fontWeight: 600, textTransform: "capitalize",
                       }}>

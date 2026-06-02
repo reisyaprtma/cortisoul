@@ -313,7 +313,7 @@ export default function HistoryPage() {
                 <span class="badge badge-emotion">${emotion}: ${count}</span>
               `).join("") || "-"}
             </div>
-            <div class="stat-label">Distribusi Emosi Utama</div>
+            <div class="stat-label">Distribusi Kondisi Mental Utama</div>
           </div>
         </div>
 
@@ -323,7 +323,7 @@ export default function HistoryPage() {
             <tr>
               <th style="width: 120px;">Tanggal</th>
               <th>Judul & Catatan</th>
-              <th style="width: 100px;">Emosi</th>
+              <th style="width: 100px;">Kondisi Mental</th>
               <th style="width: 120px;">Tingkat Stres</th>
             </tr>
           </thead>
@@ -568,7 +568,7 @@ export default function HistoryPage() {
           onChange={(e) => setFilterEmotion(e.target.value)}
           style={{ width: "auto", minWidth: "140px", flex: "1 1 140px" }}
         >
-          <option value="all">Semua Emosi</option>
+          <option value="all">Semua Kondisi Mental</option>
           {uniqueEmotions.map((e) => (
             <option key={e} value={e} style={{ textTransform: "capitalize" }}>
               {e.charAt(0).toUpperCase() + e.slice(1)}
