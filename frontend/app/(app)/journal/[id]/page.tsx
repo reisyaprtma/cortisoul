@@ -10,7 +10,7 @@ const EMOTION_COLOR_MAP: Record<string, string> = {
   depression: "#2564ebb1",           // Cool Deep Blue
   normal: "#10b981b3",               // Calming Emerald Green
   "personality disorder": "#8b5cf6b8", // Royal Violet
-  "personality_disorder": "#8b5cf6b8", // Fallback underscore
+  personality_disorder: "#8b5cf6b8", // Fallback underscore
   stress: "#ef4444b1",               // Alert Red
   anxiety: "#f97316b8",              // Electric Orange
   bipolar: "#ec4899b9",              // Dualistic Hot Pink
@@ -259,7 +259,7 @@ export default function JournalDetailPage() {
                 {journal.emotion && (
                   <span
                     style={{
-                      background: `${emotionColor(journal.emotion)}15`,
+                      background: `${emotionColor(journal.emotion).slice(0, 7)}15`,
                       color: emotionColor(journal.emotion),
                       padding: "3px 10px",
                       borderRadius: "99px",
@@ -488,7 +488,7 @@ export default function JournalDetailPage() {
                   <p style={{ fontSize: "12px", color: "var(--text-secondary)", marginBottom: "4px" }}>Kondisi Mental Anda</p>
                   <span
                     style={{
-                      background: `${emotionColor(journal.emotion)}15`,
+                      background: `${emotionColor(journal.emotion).slice(0, 7)}15`,
                       color: emotionColor(journal.emotion),
                       padding: "4px 12px",
                       borderRadius: "99px",

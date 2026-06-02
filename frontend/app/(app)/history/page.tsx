@@ -727,7 +727,7 @@ export default function HistoryPage() {
                             {j.emotion && (
                               <span
                                 style={{
-                                  background: `${emotionColor(j.emotion)}15`,
+                                  background: `${emotionColor(j.emotion).slice(0, 7)}15`,
                                   color: emotionColor(j.emotion),
                                   padding: "2px 8px",
                                   borderRadius: "99px",
