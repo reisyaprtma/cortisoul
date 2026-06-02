@@ -47,7 +47,7 @@ function isStressScoreDefined(
 
 /** Normalisasi skor ke skala tampilan 0–10 */
 function stressToDisplay(raw: number): number {
-  return raw <= 1 ? raw * 10 : raw;
+  return raw;
 }
 
 function displayStress(raw: number): string {
