@@ -4,6 +4,22 @@ import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { journalsApi, type Journal } from "@/lib/api";
 
+const EMOTION_COLOR_MAP: Record<string, string> = {
+  suicidal: "#be123dcc",             // Deep Rose Red
+  depression: "#2564ebb1",           // Cool Deep Blue
+  normal: "#10b981b3",               // Calming Emerald Green
+  "personality disorder": "#8b5cf6b8", // Royal Violet
+  "personality_disorder": "#8b5cf6b8", // Fallback underscore
+  stress: "#ef4444b1",               // Alert Red
+  anxiety: "#f97316b8",              // Electric Orange
+  bipolar: "#ec4899b9",              // Dualistic Hot Pink
+};
+
+function emotionColor(emotion: string): string {
+  return EMOTION_COLOR_MAP[emotion?.toLowerCase()] ?? "#3d5a5a";
+}
+
+
 export default function HistoryPage() {
   const [journals, setJournals] = useState<Journal[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -711,14 +727,14 @@ export default function HistoryPage() {
                             {j.emotion && (
                               <span
                                 style={{
-                                  background: `${j.emotion ? "rgba(20,184,166,0.12)" : ""}`,
-                                color: "var(--teal-badge)",
-                                padding: "2px 8px",
-                                borderRadius: "99px",
-                                fontSize: "11px",
-                                fontWeight: 600,
-                                textTransform: "capitalize",
-                                whiteSpace: "nowrap",
+                                  background: `${emotionColor(j.emotion)}15`,
+                                  color: emotionColor(j.emotion),
+                                  padding: "2px 8px",
+                                  borderRadius: "99px",
+                                  fontSize: "11px",
+                                  fontWeight: 600,
+                                  textTransform: "capitalize",
+                                  whiteSpace: "nowrap",
                                 }}
                               >
                                 {j.emotion.charAt(0).toUpperCase() + j.emotion.slice(1)}

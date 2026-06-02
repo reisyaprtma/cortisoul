@@ -5,6 +5,22 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { journalsApi, reflectionsApi, type Journal, type Reflection } from "@/lib/api";
 
+const EMOTION_COLOR_MAP: Record<string, string> = {
+  suicidal: "#be123dcc",             // Deep Rose Red
+  depression: "#2564ebb1",           // Cool Deep Blue
+  normal: "#10b981b3",               // Calming Emerald Green
+  "personality disorder": "#8b5cf6b8", // Royal Violet
+  "personality_disorder": "#8b5cf6b8", // Fallback underscore
+  stress: "#ef4444b1",               // Alert Red
+  anxiety: "#f97316b8",              // Electric Orange
+  bipolar: "#ec4899b9",              // Dualistic Hot Pink
+};
+
+function emotionColor(emotion: string): string {
+  return EMOTION_COLOR_MAP[emotion?.toLowerCase()] ?? "#3d5a5a";
+}
+
+
 export default function JournalDetailPage() {
   const params = useParams();
   const router = useRouter();
@@ -243,8 +259,8 @@ export default function JournalDetailPage() {
                 {journal.emotion && (
                   <span
                     style={{
-                      background: "rgba(20,184,166,0.12)",
-                      color: "var(--teal-badge)",
+                      background: `${emotionColor(journal.emotion)}15`,
+                      color: emotionColor(journal.emotion),
                       padding: "3px 10px",
                       borderRadius: "99px",
                       fontSize: "12px",
@@ -467,12 +483,23 @@ export default function JournalDetailPage() {
           <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: "16px" }}>
             {/* Emotion */}
             {journal.emotion && (
-              <div style={{ display: "flex", gap: "16px" }}>
+              <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
                 <div>
-                  <p style={{ fontSize: "12px", color: "var(--text-secondary)", marginBottom: "2px" }}>Kondisi Mental Anda</p>
-                  <p style={{ fontSize: "15px", fontWeight: 600, color: "var(--text-primary)", textTransform: "capitalize" }}>
+                  <p style={{ fontSize: "12px", color: "var(--text-secondary)", marginBottom: "4px" }}>Kondisi Mental Anda</p>
+                  <span
+                    style={{
+                      background: `${emotionColor(journal.emotion)}15`,
+                      color: emotionColor(journal.emotion),
+                      padding: "4px 12px",
+                      borderRadius: "99px",
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      textTransform: "capitalize",
+                      display: "inline-block",
+                    }}
+                  >
                     {journal.emotion.charAt(0).toUpperCase() + journal.emotion.slice(1)}
-                  </p>
+                  </span>
                 </div>
               </div>
             )}
