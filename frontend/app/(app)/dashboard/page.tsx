@@ -51,7 +51,7 @@ function stressToDisplay(raw: number): number {
 }
 
 function displayStress(raw: number): string {
-  return stressToDisplay(raw).toFixed(1);
+  return stressToDisplay(raw).toFixed(2);
 }
 
 function getStressColor(raw: number | null | undefined): string {
