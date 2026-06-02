@@ -10,14 +10,14 @@ import NotificationSetup from "@/components/NotificationSetup";
 
 /** Warna unik per nama emosi (dari data backend) */
 const EMOTION_COLOR_MAP: Record<string, string> = {
-  suicidal: "#be123c",             // Deep Rose Red
-  depression: "#2563eb",           // Cool Deep Blue
-  normal: "#10b981",               // Calming Emerald Green
-  "personality disorder": "#8b5cf6", // Royal Violet
-  "personality_disorder": "#8b5cf6", // Fallback underscore
-  stress: "#ef4444",               // Alert Red
-  anxiety: "#f97316",              // Electric Orange
-  bipolar: "#ec4899",              // Dualistic Hot Pink
+  suicidal: "#be123dcc",             // Deep Rose Red
+  depression: "#2564ebb1",           // Cool Deep Blue
+  normal: "#10b981b3",               // Calming Emerald Green
+  "personality disorder": "#8b5cf6b8", // Royal Violet
+  "personality_disorder": "#8b5cf6b8", // Fallback underscore
+  stress: "#ef4444b1",               // Alert Red
+  anxiety: "#f97316b8",              // Electric Orange
+  bipolar: "#ec4899b9",              // Dualistic Hot Pink
 };
 
 /** Kembalikan warna untuk emosi, fallback ke accent-blue */
@@ -49,7 +49,7 @@ function stressToDisplay(raw: number): number {
 }
 
 function displayStress(raw: number): string {
-  return raw.toFixed(2);
+  return raw.toFixed(1);
 }
 
 function getStressColor(raw: number | null | undefined): string {

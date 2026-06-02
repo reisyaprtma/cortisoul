@@ -84,8 +84,8 @@
   --accent-cyan: #0891b2;
 
   /* Stress Chart specific light mode coloring */
-  --chart-line-start: #0ea5e9; /* Sky Blue */
-  --chart-line-end: #6366f1;   /* Modern Indigo */
+  --chart-line-start: #3d5a5a;
+  --chart-line-end: #818cf8;  /* Modern Indigo */
   --chart-area-stop: #0ea5e9;  /* Sky Blue transparent fill */
   --chart-area-opacity: 0.12;
 
