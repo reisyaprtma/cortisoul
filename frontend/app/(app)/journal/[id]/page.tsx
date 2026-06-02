@@ -156,13 +156,14 @@ export default function JournalDetailPage() {
 
   const handleDelete = async () => {
     setIsDeleting(true);
+    setError("");
     try {
       await journalsApi.delete(id);
       router.push("/history");
+      router.refresh();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Gagal menghapus jurnal");
       setIsDeleting(false);
-      setShowDeleteConfirm(false);
     }
   };
 
@@ -340,7 +341,10 @@ export default function JournalDetailPage() {
                   Edit
                 </button>
                 <button
-                  onClick={() => setShowDeleteConfirm(true)}
+                  onClick={() => {
+                    setError("");
+                    setShowDeleteConfirm(true);
+                  }}
                   style={{
                     padding: "8px 14px",
                     background: "rgba(220,38,38,0.1)",
@@ -704,7 +708,10 @@ export default function JournalDetailPage() {
             zIndex: 50,
             padding: "20px",
           }}
-          onClick={() => setShowDeleteConfirm(false)}
+          onClick={() => {
+            setError("");
+            setShowDeleteConfirm(false);
+          }}
         >
           <div
             onClick={(e) => e.stopPropagation()}
@@ -726,9 +733,38 @@ export default function JournalDetailPage() {
             <p style={{ fontSize: "14px", color: "var(--text-secondary)", marginBottom: "24px" }}>
               Jurnal &ldquo;<strong>{journal.title}</strong>&rdquo; akan dihapus permanen dan tidak bisa dikembalikan.
             </p>
+            {error && (
+              <div
+                className="animate-fadeIn"
+                style={{
+                  background: "rgba(220, 38, 38, 0.08)",
+                  border: "1.5px solid rgba(220, 38, 38, 0.25)",
+                  borderRadius: "12px",
+                  padding: "12px 14px",
+                  color: "#f87171",
+                  fontSize: "13px",
+                  textAlign: "left",
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "8px",
+                  marginBottom: "20px",
+                  lineHeight: "1.5",
+                }}
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" style={{ flexShrink: 0, marginTop: "2px" }}>
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <span>{error}</span>
+              </div>
+            )}
             <div style={{ display: "flex", gap: "10px" }}>
               <button
-                onClick={() => setShowDeleteConfirm(false)}
+                onClick={() => {
+                  setError("");
+                  setShowDeleteConfirm(false);
+                }}
                 style={{
                   flex: 1,
                   padding: "11px",
