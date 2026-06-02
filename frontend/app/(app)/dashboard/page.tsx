@@ -752,7 +752,7 @@ export default function DashboardPage() {
             margin: "0 0 10px 0",
             lineHeight: 1.5,
           }}>
-            Berdasarkan jurnalmu hari ini
+            Berdasarkan jurnalmu yang kamu tulis minggu ini
           </p>
           <EmotionPanel emotionSummary={emotionSummary} />
         </div>
