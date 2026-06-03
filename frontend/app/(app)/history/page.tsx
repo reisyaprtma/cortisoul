@@ -368,7 +368,7 @@ export default function HistoryPage() {
                     <div class="journal-content">${j.content}</div>
                   </td>
                   <td style="vertical-align: top;">
-                    ${j.emotion ? `<span class="badge badge-emotion">${j.emotion}</span>` : "-"}
+                    ${j.emotion ? `<span class="badge badge-emotion">${j.emotion.toLowerCase() =="personality_disorder"? "Personality Disorder" : j.emotion}</span>` : "-"}
                   </td>
                   <td style="vertical-align: top;">
                     ${stressBadge}
