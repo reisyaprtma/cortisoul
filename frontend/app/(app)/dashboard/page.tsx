@@ -118,7 +118,7 @@ function computeWeeklyStressFromJournals(journals: Journal[]): StressLevel[] {
     const d = new Date(j.created_at);
     if (d < monday || d >= sundayEnd) return;
     // toLocaleDateString("en-CA") menghasilkan format YYYY-MM-DD
-    const dateStr = d.toLocaleDateString("id-ID");
+    const dateStr = d.toLocaleDateString("en-CA");
     if (!scoresByDate.has(dateStr)) scoresByDate.set(dateStr, []);
     scoresByDate.get(dateStr)!.push(j.stress_score);
   });
@@ -126,7 +126,7 @@ function computeWeeklyStressFromJournals(journals: Journal[]): StressLevel[] {
   return CLIENT_WEEK_DAYS.map((day, i) => {
     const date = new Date(monday);
     date.setDate(monday.getDate() + i);
-    const dateStr = date.toLocaleDateString("id-ID");
+    const dateStr = date.toLocaleDateString("en-CA");
     const scores = scoresByDate.get(dateStr) || [];
     const avg =
       scores.length > 0
