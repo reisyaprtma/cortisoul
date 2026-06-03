@@ -502,7 +502,7 @@ export default function JournalDetailPage() {
                       display: "inline-block",
                     }}
                   >
-                    {journal.emotion.charAt(0).toUpperCase() + journal.emotion.slice(1) == 'personality_disorder' ? 'Personality Disorder' : journal.emotion.charAt(0).toUpperCase() + journal.emotion.slice(1)}
+                    {journal.emotion === "personality_disorder" ? "Personality Disorder" : journal.emotion.charAt(0).toUpperCase() + journal.emotion.slice(1)}
                   </span>
                 </div>
               </div>
