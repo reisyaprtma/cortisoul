@@ -459,6 +459,7 @@ function EmotionPanel({ emotionSummary }: { emotionSummary: EmotionSummary[] }) 
           </p>
         </div>
       </div>
+      {console.log('domName===============================',domName.toLowerCase())}
 
       {/* Emotion bar list */}
       <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
