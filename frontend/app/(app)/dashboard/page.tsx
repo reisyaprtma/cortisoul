@@ -911,7 +911,7 @@ export default function DashboardPage() {
                         padding: "2px 8px", borderRadius: "99px",
                         fontSize: "11px", fontWeight: 600, textTransform: "capitalize",
                       }}>
-                        {formatEmotion(j.emotion)}
+                        {formatEmotion(j.emotion) === "personality_disorder" ? "Personality Disorder" : formatEmotion(j.emotion)}
                       </span>
                     )}
                     {j.stress_score != null && (
