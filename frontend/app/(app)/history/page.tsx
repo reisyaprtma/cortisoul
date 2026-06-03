@@ -737,7 +737,7 @@ export default function HistoryPage() {
                                   whiteSpace: "nowrap",
                                 }}
                               >
-                                {j.emotion.charAt(0).toUpperCase() + j.emotion.slice(1)}
+                                {j.emotion === "personality_disorder" ? "Personality Disorder" : j.emotion.charAt(0).toUpperCase() + j.emotion.slice(1)}
                               </span>
                             )}
                             {j.stress_score != null && (

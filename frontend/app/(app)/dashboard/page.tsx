@@ -452,7 +452,7 @@ function EmotionPanel({ emotionSummary }: { emotionSummary: EmotionSummary[] }) 
             textTransform: "capitalize",
             lineHeight: 1.2,
           }}>
-            {domName || "—"}
+            {domName === "personality_disorder" ? "Personality Disorder" : domName || "—"}
           </p>
           <p style={{ fontSize: "14px", color: "var(--text-secondary)", marginTop: "4px" }}>
             {dominant.count}x muncul minggu ini

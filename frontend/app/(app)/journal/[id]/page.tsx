@@ -269,7 +269,7 @@ export default function JournalDetailPage() {
                       textTransform: "capitalize",
                     }}
                   >
-                    {journal.emotion.charAt(0).toUpperCase() + journal.emotion.slice(1)}
+                    {journal.emotion === "personality_disorder" ? "Personality Disorder" : journal.emotion.charAt(0).toUpperCase() + journal.emotion.slice(1)}
                   </span>
                 )}
                 {journal.stress_score !== undefined && journal.stress_score !== null && (
