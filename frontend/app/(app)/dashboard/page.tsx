@@ -489,7 +489,7 @@ function EmotionPanel({ emotionSummary }: { emotionSummary: EmotionSummary[] }) 
                     color: "var(--text-primary)",
                     textTransform: "capitalize",
                   }}>
-                    {formatEmotion(e.emotion)}
+                    {formatEmotion(e.emotion).toLowerCase()==="personality_disorder"? "Personality Disorder" : formatEmotion(e.emotion)}
                   </span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
