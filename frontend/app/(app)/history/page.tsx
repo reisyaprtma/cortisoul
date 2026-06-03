@@ -587,7 +587,7 @@ export default function HistoryPage() {
           <option value="all">Semua Kondisi Mental</option>
           {uniqueEmotions.map((e) => (
             <option key={e} value={e} style={{ textTransform: "capitalize" }}>
-              {e.charAt(0).toUpperCase() + e.slice(1)}
+              {e.toLowerCase() =="personality_disorder"? "Personality Disorder" : e.charAt(0).toUpperCase() + e.slice(1)}
             </option>
           ))}
         </select>
