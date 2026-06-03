@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { journalsApi, type Journal } from "@/lib/api";
+import { useAuth } from "@/lib/auth-context";
 
 const EMOTION_COLOR_MAP: Record<string, string> = {
   suicidal: "#be123dcc",             // Deep Rose Red
@@ -21,6 +22,7 @@ function emotionColor(emotion: string): string {
 
 
 export default function HistoryPage() {
+  const { user } = useAuth();
   const [journals, setJournals] = useState<Journal[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -309,7 +311,7 @@ export default function HistoryPage() {
             <div class="subtitle">Rentang Laporan: ${formattedStart} - ${formattedEnd}</div>
           </div>
           <div class="meta">
-            <div>Dicetak oleh: User CortiSoul</div>
+            <div>Dicetak oleh: ${user?.fullname || user?.username || "Pengguna"}</div>
             <div>Tanggal Cetak: ${new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}</div>
           </div>
         </div>
