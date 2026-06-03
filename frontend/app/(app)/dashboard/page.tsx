@@ -549,6 +549,9 @@ export default function DashboardPage() {
         journalsApi.getWeeklyStress(),
         journalsApi.getWeeklyEmotion(),
       ]);
+      console.log('journalsResult', journalsResult);
+      console.log('stressResult', stressResult);
+      console.log('emotionResult', emotionResult);
 
       // ── Journals ──────────────────────────────────────────────────────────
       const allJournals =
@@ -613,6 +616,8 @@ export default function DashboardPage() {
   const todayDate = new Date().toLocaleDateString("id-ID", {
     weekday: "long", day: "numeric", month: "long", year: "numeric",
   });
+  console.log('emotionSummary===============================',emotionSummary)
+  console.log('stressLevels===============================',stressLevels)
 
   const validScores = stressLevels
     .filter((s) => isStressScoreDefined(s.averageScore))
